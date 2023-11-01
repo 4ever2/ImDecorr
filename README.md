@@ -14,7 +14,7 @@ This README.txt is accompanied by
 
 * The plugin [ImageDecorrelationAnalysis_plugin.jar](ijplugin/ImageDecorrelationAnalysis_plugin.jar) in ijplugin folder
 
-* A demonstration dataset: [test_image.tif](test_image.tif).
+* A demonstration dataset: [test_image.tif](examples/test_image.tif).
 This data set consists in a confocal and a STED image of COS7 microtubules labelled with alexa594 combined in a single stack
 
 * A copy of the licence: [LICENSE](LICENSE)
