@@ -10,28 +10,24 @@ If this software has been usefull to your research, please consider citing
 https://doi.org/10.1038/s41592-019-0515-7
 
 -------------------
-This README.txt file should be accompanied by
+This README.txt is accompanied by
 
-* The plugin
-`ImageDecorrelationAnalysis.jar` in ijplugin folder
+* The plugin [ImageDecorrelationAnalysis_plugin.jar](ijplugin/ImageDecorrelationAnalysis_plugin.jar) in ijplugin folder
 
-* A demonstration dataset
-`test_image.tif`
+* A demonstration dataset: [test_image.tif](test_image.tif).
 This data set consists in a confocal and a STED image of COS7 microtubules labelled with alexa594 combined in a single stack
 
-* A copy of the licence
-LICENSE.txt
+* A copy of the licence: [LICENSE](LICENSE)
 
-* A Matlab script
-`main_imageDecorr.m`
+* A Matlab script [main_imageDecorr.m](matlab/main_imageDecorr.m)
 
-* Matlab functions in a folder required by `main_imageDecorr.m` for image decorrelation analysis
+* Matlab functions in a [folder](matlab/funcs/) required by `main_imageDecorr.m` for image decorrelation analysis
 funcs
 
 
 ## System requirements
 
-`ImageDecorrelationAnalysis_plugin.jar` will require a running installation of ImageJ
+[ImageDecorrelationAnalysis_plugin.jar](ijplugin/ImageDecorrelationAnalysis_plugin.jar) will require a running installation of ImageJ
 Full instruction for the installation of ImageJ can be found at:
 https://imagej.nih.gov/ij/download.html
 
@@ -43,7 +39,7 @@ Matlab functions were developped using 64bits Matlab R2017b
 
 ## Installation guide
 
-Copy the file `ImageDecorrelationAnalysis_plugin.jar` in your ImageJ plugins folder `(.../ImageJ/plugins)`
+Copy the file [ImageDecorrelationAnalysis_plugin.jar](ijplugin/ImageDecorrelationAnalysis_plugin.jar) in your ImageJ plugins folder `(.../ImageJ/plugins)`
 Restart ImageJ and the plugin will appear in the plugin list, under: `Plugins -> ImageDecorrelationAnalysis`
 
 
@@ -75,8 +71,7 @@ If checked, the user will be asked to select a folder containing images. All ima
 2. Go to `Plugins -> ImageDecorrelationAnalysis`
 A window will open with default settings already set
 
-3. Open the demonstration data set
-`demo_COS7_a-tub_abberior_star635_confocal_STED.tif`
+3. Open the demonstration data set `demo_COS7_a-tub_abberior_star635_confocal_STED.tif`
 
 4. Click on Compute
 
