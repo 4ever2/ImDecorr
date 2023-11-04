@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<groupId>org.springframeworkTODO</groupId>
+	<artifactId>ImageDecorrelationAnalysis</artifactId>
+	<packaging>jar</packaging>
+	<version>1.1.8</version>
+
+	<name>Image Decorrelation Analysis</name>
+	<description>Image Decorrelation Analysis plugin for ImageJ.</description>
+	<url>https://github.com/4ever2/ImDecorr</url>
+
+	<licenses>
+		<license>
+			<name>GNU General Public License v3</name>
+			<url>https://www.gnu.org/licenses/gpl.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>0000-0002-3101-6641</id>
+			<name>Adrien Descloux</name>
+			<email>adrien.descloux@epfl.ch</email>
+			<organization>École Polytechnique Fédérale de Lausanne</organization>
+			<roles>
+				<role>author</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>0000-0003-4515-4356</id>
+			<name>Kristin Grußmayer</name>
+			<organization>École Polytechnique Fédérale de Lausanne</organization>
+			<roles>
+				<role>author</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>0000-0001-8194-2785</id>
+			<name>Aleksandra Radenovic</name>
+			<email>aleksandra.radenovic@epfl.ch</email>
+			<organization>École Polytechnique Fédérale de Lausanne</organization>
+			<roles>
+				<role>author</role>
+			</roles>
+		</developer>
+	</developers>
+	<contributors>
+		<contributor>
+			<name>4ever2</name>
+			<url>https://github.com/4ever2</url>
+			<organization>Aarhus University</organization>
+			<roles><role>maintainer</role></roles>
+			<properties><id>4ever2</id></properties>
+		</contributor>
+	</contributors>
+
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/4ever2/ImDecorr/issues/</url>
+	</issueManagement>
+	<ciManagement>
+		<system>GitHub Actions</system>
+		<url>https://github.com/4ever2/ImDecorr/actions</url>
+	</ciManagement>
+	<scm>
+		<connection>scm:git:https://github.com/4ever2/ImDecorr</connection>
+		<developerConnection>scm:git:git@github.com:4ever2/ImDecorr</developerConnection>
+		<tag>HEAD</tag>
+		<url>https://github.com/4ever2/ImDecorr</url>
+	</scm>
+
+	<dependencies>
+		<!-- ImageJ dependencies -->
+		<dependency>
+			<groupId>net.imagej</groupId>
+			<artifactId>ij</artifactId>
+		</dependency>
+	</dependencies>
+
+	<properties>
+		<license.licenseName>gpl_v3</license.licenseName>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+</project>
