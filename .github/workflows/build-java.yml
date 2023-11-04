@@ -23,5 +23,6 @@ jobs:
         with:
           java-version: '8'
           distribution: 'zulu'
+          cache: maven
       - name: Build
         run: cd ijplugin && mvn package
