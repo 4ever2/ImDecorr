@@ -31,5 +31,6 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ImageDecorrelationAnalysis.jar
+          name: Package
           path: staging/*.jar
+          retention-days: 7
