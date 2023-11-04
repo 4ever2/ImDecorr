@@ -10,8 +10,6 @@ on:
     - 'ijplugin/**/*'
 permissions:
   contents: 'read'
-env:
-  THREADS: 2
 jobs:
   build:
     runs-on: 'ubuntu-latest'
