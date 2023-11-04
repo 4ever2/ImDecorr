@@ -4,20 +4,21 @@ on:
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+'
 permissions:
-  contents: 'read'
+  contents: read
+  packages: write
 jobs:
   build:
     runs-on: 'ubuntu-latest'
     steps:
       - name: Checkout branch ${{ github.ref_name }}
         uses: actions/checkout@v4
-      - name: Set up JDK 11 for x64
+      - name: Set up JDK
         uses: actions/setup-java@v3
         with:
           java-version: '8'
           distribution: 'zulu'
           cache: maven
-      - name: Publish package
-        run: mvn deploy
+      - name: Publish to GitHub Packages
+        run: cd ijplugin && mvn --batch-mode -DuseGitHubPackages=true deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
