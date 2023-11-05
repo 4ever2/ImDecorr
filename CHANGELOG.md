@@ -1,6 +1,11 @@
 # Changelog
 
 ## Unrelased
+* Add changelog
+* Clean up and restructure repository
+* Set up CI/CD
+* Publish ImageJ plugin on GitHub Maven Registry
+* Update documentation
 
 ## 1.1.8
 * Fixed bug where the final local maxima was selected from the refined curves only instead of all the curves
