@@ -1,5 +1,12 @@
 # ImDecorr
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4655984.svg)](https://doi.org/10.5281/zenodo.4655984)
+[![Static Badge](https://img.shields.io/badge/DOI-10.1038%2Fs41592--019--0515--7-blue)](https://doi.org/10.1038/s41592-019-0515-7)
+[![GitHub](https://img.shields.io/github/license/4ever2/ImDecorr)](https://github.com/4ever2/ImDecorr/blob/master/LICENSE)
+[![Build ImageJ Plugin](https://github.com/4ever2/ImDecorr/actions/workflows/build-java.yml/badge.svg?branch=master)](https://github.com/4ever2/ImDecorr/actions/workflows/build-java.yml)
+[![Build MATLAB Plugin](https://github.com/4ever2/ImDecorr/actions/workflows/build-matlab.yml/badge.svg?branch=master)](https://github.com/4ever2/ImDecorr/actions/workflows/build-matlab.yml)
+
+
 A detailled description of the method can be found in :+ 
 Descloux, A., K. S. Gru�mayer, and A. Radenovic. Parameter-free image 
 resolution estimation based on decorrelation analysis.
