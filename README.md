@@ -7,9 +7,8 @@
 [![Build MATLAB Plugin](https://github.com/4ever2/ImDecorr/actions/workflows/build-matlab.yml/badge.svg?branch=master)](https://github.com/4ever2/ImDecorr/actions/workflows/build-matlab.yml)
 
 
-A detailled description of the method can be found in :+ 
-Descloux, A., K. S. Gru�mayer, and A. Radenovic. Parameter-free image 
-resolution estimation based on decorrelation analysis.
+A detailled description of the method can be found in :
+> Descloux, A., Grußmayer, K.S. & Radenovic, A. Parameter-free image resolution estimation based on decorrelation analysis.
 Nature methods (2019): 1-7.
 
 If this software has been usefull to your research, please consider citing
@@ -26,9 +25,9 @@ This data set consists in a confocal and a STED image of COS7 microtubules label
 
 * A copy of the licence: [LICENSE](LICENSE)
 
-* A Matlab script [main_imageDecorr.m](matlab/main_imageDecorr.m)
+* A Matlab script [main_imageDecorr.m](matlab/code/main_imageDecorr.m)
 
-* Matlab functions in a [folder](matlab/funcs/) required by `main_imageDecorr.m` for image decorrelation analysis
+* Matlab functions in a [folder](matlab/code/funcs/) required by `main_imageDecorr.m` for image decorrelation analysis
 funcs
 
 
