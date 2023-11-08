@@ -141,3 +141,6 @@ octave-workspace
 # Ignore all local history of files
 .history
 .ionide
+
+# Maven
+ijplugin/target/
