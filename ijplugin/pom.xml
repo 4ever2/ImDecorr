@@ -106,6 +106,6 @@
 
 		<package-name>com.github.imdecorr</package-name>
 		<main-class>com.github.imdecorr.Decorrelation_Analysis</main-class>
-		<license.copyrightOwners>Ades91</license.copyrightOwners>
+		<license.copyrightOwners>Adrien Descloux - adrien.descloux@epfl.ch, École Polytechnique Fédérale de Lausanne</license.copyrightOwners>
 	</properties>
 </project>
