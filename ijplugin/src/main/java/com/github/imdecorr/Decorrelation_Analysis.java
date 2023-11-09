@@ -33,24 +33,78 @@ import javax.swing.JFrame;
 import javax.swing.JTextPane;
 import javax.swing.UIManager;
 import java.awt.BorderLayout;
+import java.io.File;
+import java.io.FilenameFilter;
 
 import ij.IJ;
 import ij.ImageJ;
 import ij.ImagePlus;
+import ij.ImageStack;
+import ij.gui.NonBlockingGenericDialog;
+import ij.gui.Roi;
 import ij.plugin.PlugIn;
 
-
 public class Decorrelation_Analysis implements PlugIn {
+	private double rMin;
+	private double rMax;
+	private int nr;
+	private int ng;
+	private boolean doPlot;
+	private boolean batchStack;
+	private boolean batchFolder;
 
 	@Override
 	public void run(String arg) {
-		if (arg.equals("about")) {
-			showAbout();
-			return;
+		switch (arg.toLowerCase()) {
+			case "about":
+				showAbout();
+				break;
+			case "run":
+				runPlugin();
+				break;
+			default:
+				throw new UnsupportedOperationException(String.format("Unimplemented method '%s'", arg));
 		}
+	}
 
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'run'");
+	private void runPlugin() {
+		if (!showDialog())
+			return;
+
+		//initDecorrelationAnalysis(rMin, rMax, nr, ng, doPlot, batchFolder, batchStack);
+		IJ.log(String.format("%f, %f, %d, %d, %b, %b, %b", rMin, rMax, nr, ng, doPlot, batchStack, batchFolder));
+	}
+
+	private boolean showDialog() {
+		NonBlockingGenericDialog dialog = new NonBlockingGenericDialog("Image Decorrelation Analysis");
+		dialog.addMessage("Settings");
+
+		dialog.addNumericField("Radius_min", 0);
+		dialog.addToSameRow();
+		dialog.addNumericField("Radius_max", 1);
+		dialog.addNumericField("Nr", 50);
+		dialog.addToSameRow();
+		dialog.addNumericField("Ng", 10);
+		dialog.addCheckbox("Do_plot", true);
+		dialog.addToSameRow();
+		dialog.addCheckbox("Batch_stack", false);
+		dialog.addToSameRow();
+		dialog.addCheckbox("Batch_folder", false);
+
+		dialog.showDialog();
+		if (dialog.wasCanceled())
+			return false;
+
+		rMin = dialog.getNextNumber();
+		rMax = dialog.getNextNumber();
+		nr = (int) dialog.getNextNumber();
+		ng = (int) dialog.getNextNumber();
+		doPlot = dialog.getNextBoolean();
+		batchStack = dialog.getNextBoolean();
+		batchFolder = dialog.getNextBoolean();
+
+		return true;
+	}
 	}
 
 	private String getVersion() {
@@ -65,7 +119,7 @@ public class Decorrelation_Analysis implements PlugIn {
 		String titleText = String.format("<h1> About %s</h1>", getPluginName());
 		String versionText = String.format("Version %s <br>", getVersion());
 		String aboutText = new String("<html>" +
-				titleText + 
+				titleText +
 				"Author : Adrien Descloux <br>" +
 				"LBEN STI EPFL Switzerland <br>" +
 				versionText +
@@ -128,10 +182,6 @@ public class Decorrelation_Analysis implements PlugIn {
 
 		// start ImageJ
 		new ImageJ();
-
-		// open the Clown sample
-		ImagePlus image = IJ.openImage("http://imagej.net/images/clown.jpg");
-		image.show();
 
 		// run the plugin
 		IJ.runPlugIn(clazz.getName(), "");
