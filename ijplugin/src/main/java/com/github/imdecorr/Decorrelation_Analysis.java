@@ -51,7 +51,7 @@ public class Decorrelation_Analysis implements PlugIn {
 	private int ng;
 	private boolean doPlot;
 	private boolean batchStack;
-	private boolean batchFolder;
+	private String imPath;
 
 	@Override
 	public void run(String arg) {
@@ -62,6 +62,9 @@ public class Decorrelation_Analysis implements PlugIn {
 			case "run":
 				runPlugin();
 				break;
+			case "run_batch":
+				runPluginBatch();
+				break;
 			default:
 				throw new UnsupportedOperationException(String.format("Unimplemented method '%s'", arg));
 		}
@@ -71,8 +74,78 @@ public class Decorrelation_Analysis implements PlugIn {
 		if (!showDialog())
 			return;
 
-		initDecorrelationAnalysis(rMin, rMax, nr, ng, doPlot, batchFolder, batchStack);
-		//IJ.log(String.format("%f, %f, %d, %d, %b, %b, %b", rMin, rMax, nr, ng, doPlot, batchStack, batchFolder));
+		ImagePlus im = (ImagePlus) ij.WindowManager.getCurrentImage();
+
+		if (im == null) {
+			// open file selections tool for images
+			IJ.open();
+			im = ij.WindowManager.getCurrentImage();
+			im.show();
+		}
+
+		// check if current image has a rectangle ROI selection
+		if (im.getRoi() != null) {
+			if (im.getRoi().getType() == Roi.RECTANGLE) {// Rectangle ROI
+			} else {
+				IJ.log("Non rectangular ROI not supported.\n"
+						+ "Deleting ROI and continue analysis.");
+				im.deleteRoi();
+			}
+		}
+
+		if (batchStack == false) {
+			// Extract current image
+			ImageStack stack = im.getStack();
+			ImagePlus imp = new ImagePlus(stack.getSliceLabel(im.getCurrentSlice()),
+					stack.getProcessor(im.getCurrentSlice()));
+			imp.setCalibration(im.getCalibration());
+			imp.setRoi(im.getRoi());
+			imp.setTitle(im.getTitle());
+
+			im = imp;
+		}
+
+		// Image ready to be processed
+		initDecorrelationAnalysis(im, null);
+	}
+
+	private void runPluginBatch() {
+		if (!showDialogBatch())
+			return;
+
+		File dir = new File(imPath);
+		String[] files = dir.list(new FilenameFilter() {
+			public boolean accept(File dir, String name) {
+				int index = name.indexOf('.', name.length() - 5);
+				if (index != -1) {
+					String ext = name.substring(index, name.length());
+
+					if (ext.equals(".tif") || ext.equals(".tiff") || ext.equals(".png") ||
+							ext.equals(".ome") || ext.equals(".bmp"))
+						return true;
+					else
+						return false;
+				} else
+					return false;
+			}
+		});
+
+		for (int k = 0; k < files.length; k++) {
+			String file = files[k];
+			// IJ.log("File # " + Integer.toString(k) + ": " + file);
+			ImagePlus im = IJ.openImage(imPath + File.separator + file);
+			im.show();
+			String savePath;
+			if (im != null) {
+				if (k == files.length - 1)
+					savePath = imPath;
+				else
+					savePath = null;
+
+				// Image ready to be processed
+				initDecorrelationAnalysis(im, savePath);
+			}
+		}
 	}
 
 	private boolean showDialog() {
@@ -88,8 +161,6 @@ public class Decorrelation_Analysis implements PlugIn {
 		dialog.addCheckbox("Do_plot", true);
 		dialog.addToSameRow();
 		dialog.addCheckbox("Batch_stack", false);
-		dialog.addToSameRow();
-		dialog.addCheckbox("Batch_folder", false);
 
 		dialog.showDialog();
 		if (dialog.wasCanceled())
@@ -101,96 +172,43 @@ public class Decorrelation_Analysis implements PlugIn {
 		ng = (int) dialog.getNextNumber();
 		doPlot = dialog.getNextBoolean();
 		batchStack = dialog.getNextBoolean();
-		batchFolder = dialog.getNextBoolean();
 
 		return true;
 	}
 
-	private static void initDecorrelationAnalysis(double rmin, double rmax, int Nr, int Ng, boolean doPlot,
-			boolean batch, boolean batchStack) {
-		// File selection management
-		if (batch == false) {
+	private boolean showDialogBatch() {
+		NonBlockingGenericDialog dialog = new NonBlockingGenericDialog("Image Decorrelation Analysis (Batch)");
+		dialog.addMessage("Settings");
 
-			ImagePlus im = (ImagePlus) ij.WindowManager.getCurrentImage();
+		dialog.addNumericField("Radius_min", 0);
+		dialog.addToSameRow();
+		dialog.addNumericField("Radius_max", 1);
+		dialog.addNumericField("Nr", 50);
+		dialog.addToSameRow();
+		dialog.addNumericField("Ng", 10);
+		dialog.addCheckbox("Do_plot", true);
+		dialog.addDirectoryField("Image_path", "");
 
-			if (im == null) {
-				// open file selections tool for images
-				IJ.open();
-				im = ij.WindowManager.getCurrentImage();
-				im.show();
-			}
+		dialog.showDialog();
+		if (dialog.wasCanceled())
+			return false;
 
-			// check if current image has a rectangle ROI selection
-			if (im.getRoi() != null) {
-				if (im.getRoi().getType() == Roi.RECTANGLE) {// Rectangle ROI
-				} else {
-					IJ.log("Non rectangular ROI not supported.\n"
-							+ "Deleting ROI and continue analysis.");
-					im.deleteRoi();
-				}
-			}
+		rMin = dialog.getNextNumber();
+		rMax = dialog.getNextNumber();
+		nr = (int) dialog.getNextNumber();
+		ng = (int) dialog.getNextNumber();
+		doPlot = dialog.getNextBoolean();
+		imPath = dialog.getNextString();
 
-			if (batchStack == false) {
-				// Extract current image
-				ImageStack stack = im.getStack();
-				ImagePlus imp = new ImagePlus(stack.getSliceLabel(im.getCurrentSlice()),
-						stack.getProcessor(im.getCurrentSlice()));
-				imp.setCalibration(im.getCalibration());
-				imp.setRoi(im.getRoi());
-				imp.setTitle(im.getTitle());
+		return true;
+	}
 
-				im = imp;
-			}
+	private void initDecorrelationAnalysis(ImagePlus im, String savePath) {
+		// Create ImageDecorrelationAnalysis object
+		ImageDecorrelationAnalysis IDA = new ImageDecorrelationAnalysis(im, rMin, rMax, nr, ng, doPlot, savePath);
 
-			// Image ready to be processed
-
-			// Create ImageDecorrelationAnalysis object
-			ImageDecorrelationAnalysis IDA = new ImageDecorrelationAnalysis(im, rmin, rmax, Nr, Ng, doPlot, null);
-
-			// Run the analysis
-			IDA.startAnalysis();
-
-		} else { // open selection tool for folder with images in them
-			ij.io.DirectoryChooser gd = new ij.io.DirectoryChooser(
-					"Please select a directory containing images to be processed.");
-			String dirPath = gd.getDirectory();
-			File dir = new File(dirPath);
-			String[] files = dir.list(new FilenameFilter() {
-				public boolean accept(File dir, String name) {
-					int index = name.indexOf('.', name.length() - 5);
-					if (index != -1) {
-						String ext = name.substring(index, name.length());
-
-						if (ext.equals(".tif") || ext.equals(".tiff") || ext.equals(".png") ||
-								ext.equals(".ome") || ext.equals(".bmp"))
-							return true;
-						else
-							return false;
-					} else
-						return false;
-				}
-			});
-
-			for (int k = 0; k < files.length; k++) {
-				String file = files[k];
-				// IJ.log("File # " + Integer.toString(k) + ": " + file);
-				ImagePlus im = IJ.openImage(dirPath + File.separator + file);
-				im.show();
-				String savePath;
-				if (im != null) {
-					if (k == files.length - 1)
-						savePath = dirPath;
-					else
-						savePath = null;
-
-					ImageDecorrelationAnalysis IDA = new ImageDecorrelationAnalysis(im, rmin, rmax, Nr, Ng, doPlot,
-							savePath);
-					// Run the analysis
-					IDA.startAnalysis();
-				}
-			}
-
-		}
+		// Run the analysis
+		IDA.startAnalysis();
 	}
 
 	private String getVersion() {
