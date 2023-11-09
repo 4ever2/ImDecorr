@@ -1,3 +1,4 @@
+package com.github.imdecorr;
 /* 
 % 
 %   Set of utilities image processing functions for the ImageDecorrelationAnalysis plugin

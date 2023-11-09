@@ -1,3 +1,4 @@
+package com.github.imdecorr;
 /* 
 % 
 %   ImageDecorrelationAnalysis GUI and input manager

@@ -1,3 +1,4 @@
+package com.github.imdecorr;
 /* 
 % 
 %   Output functions for the ImageDecorrelationAnalysis plugin
