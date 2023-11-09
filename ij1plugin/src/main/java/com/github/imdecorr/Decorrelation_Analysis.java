@@ -29,10 +29,6 @@
 package com.github.imdecorr;
 
 
-import javax.swing.JFrame;
-import javax.swing.JTextPane;
-import javax.swing.UIManager;
-import java.awt.BorderLayout;
 import java.io.File;
 import java.io.FilenameFilter;
 
@@ -41,6 +37,7 @@ import ij.ImageJ;
 import ij.ImagePlus;
 import ij.ImageStack;
 import ij.gui.NonBlockingGenericDialog;
+import ij.gui.HTMLDialog;
 import ij.gui.Roi;
 import ij.plugin.PlugIn;
 
@@ -282,17 +279,7 @@ public class Decorrelation_Analysis implements PlugIn {
 				"You should have received a copy of the GNU General Public License <br>" +
 				"along with this program.  If not, see <a href=\"http://www.gnu.org/licenses/\">http://www.gnu.org/licenses/</a>. </html>");
 
-		JTextPane tf = new JTextPane();
-		tf.setEditable(false);
-		tf.setBorder(null);
-		tf.setForeground(UIManager.getColor("Label.foreground"));
-		tf.setFont(UIManager.getFont("Label.font"));
-		tf.setContentType("text/html");
-		tf.setText(aboutText);
-		JFrame frame = new JFrame("About this plugin");
-		frame.add(tf, BorderLayout.CENTER);
-		frame.setSize(500, 650);
-		frame.setVisible(true);
+		new HTMLDialog("About this plugin", aboutText, false);		
 	}
 
 	/**
