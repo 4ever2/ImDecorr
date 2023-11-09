@@ -71,8 +71,8 @@ public class Decorrelation_Analysis implements PlugIn {
 		if (!showDialog())
 			return;
 
-		//initDecorrelationAnalysis(rMin, rMax, nr, ng, doPlot, batchFolder, batchStack);
-		IJ.log(String.format("%f, %f, %d, %d, %b, %b, %b", rMin, rMax, nr, ng, doPlot, batchStack, batchFolder));
+		initDecorrelationAnalysis(rMin, rMax, nr, ng, doPlot, batchFolder, batchStack);
+		//IJ.log(String.format("%f, %f, %d, %d, %b, %b, %b", rMin, rMax, nr, ng, doPlot, batchStack, batchFolder));
 	}
 
 	private boolean showDialog() {
@@ -105,6 +105,92 @@ public class Decorrelation_Analysis implements PlugIn {
 
 		return true;
 	}
+
+	private static void initDecorrelationAnalysis(double rmin, double rmax, int Nr, int Ng, boolean doPlot,
+			boolean batch, boolean batchStack) {
+		// File selection management
+		if (batch == false) {
+
+			ImagePlus im = (ImagePlus) ij.WindowManager.getCurrentImage();
+
+			if (im == null) {
+				// open file selections tool for images
+				IJ.open();
+				im = ij.WindowManager.getCurrentImage();
+				im.show();
+			}
+
+			// check if current image has a rectangle ROI selection
+			if (im.getRoi() != null) {
+				if (im.getRoi().getType() == Roi.RECTANGLE) {// Rectangle ROI
+				} else {
+					IJ.log("Non rectangular ROI not supported.\n"
+							+ "Deleting ROI and continue analysis.");
+					im.deleteRoi();
+				}
+			}
+
+			if (batchStack == false) {
+				// Extract current image
+				ImageStack stack = im.getStack();
+				ImagePlus imp = new ImagePlus(stack.getSliceLabel(im.getCurrentSlice()),
+						stack.getProcessor(im.getCurrentSlice()));
+				imp.setCalibration(im.getCalibration());
+				imp.setRoi(im.getRoi());
+				imp.setTitle(im.getTitle());
+
+				im = imp;
+			}
+
+			// Image ready to be processed
+
+			// Create ImageDecorrelationAnalysis object
+			ImageDecorrelationAnalysis IDA = new ImageDecorrelationAnalysis(im, rmin, rmax, Nr, Ng, doPlot, null);
+
+			// Run the analysis
+			IDA.startAnalysis();
+
+		} else { // open selection tool for folder with images in them
+			ij.io.DirectoryChooser gd = new ij.io.DirectoryChooser(
+					"Please select a directory containing images to be processed.");
+			String dirPath = gd.getDirectory();
+			File dir = new File(dirPath);
+			String[] files = dir.list(new FilenameFilter() {
+				public boolean accept(File dir, String name) {
+					int index = name.indexOf('.', name.length() - 5);
+					if (index != -1) {
+						String ext = name.substring(index, name.length());
+
+						if (ext.equals(".tif") || ext.equals(".tiff") || ext.equals(".png") ||
+								ext.equals(".ome") || ext.equals(".bmp"))
+							return true;
+						else
+							return false;
+					} else
+						return false;
+				}
+			});
+
+			for (int k = 0; k < files.length; k++) {
+				String file = files[k];
+				// IJ.log("File # " + Integer.toString(k) + ": " + file);
+				ImagePlus im = IJ.openImage(dirPath + File.separator + file);
+				im.show();
+				String savePath;
+				if (im != null) {
+					if (k == files.length - 1)
+						savePath = dirPath;
+					else
+						savePath = null;
+
+					ImageDecorrelationAnalysis IDA = new ImageDecorrelationAnalysis(im, rmin, rmax, Nr, Ng, doPlot,
+							savePath);
+					// Run the analysis
+					IDA.startAnalysis();
+				}
+			}
+
+		}
 	}
 
 	private String getVersion() {
