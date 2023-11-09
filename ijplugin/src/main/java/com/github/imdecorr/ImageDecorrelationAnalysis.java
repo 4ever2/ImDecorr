@@ -1,4 +1,3 @@
-package com.github.imdecorr;
 /* 
 % 
 %   Main ImageDecorrelationAnalysis class
@@ -27,6 +26,8 @@ package com.github.imdecorr;
 % 	You should have received a copy of the GNU General Public License
 %  	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+package com.github.imdecorr;
+
 
 import ij.IJ;
 import ij.ImagePlus;
