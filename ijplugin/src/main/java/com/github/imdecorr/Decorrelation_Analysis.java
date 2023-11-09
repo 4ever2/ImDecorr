@@ -181,7 +181,53 @@ public class Decorrelation_Analysis implements PlugIn {
 			batchStack = dialog.getNextBoolean();
 		}
 
+		validateInputs();
+
 		return true;
+	}
+
+	private void validateInputs() {
+		// Validate rmin & rmax
+		boolean rValid = true;
+		double rmin = rMin;
+		double rmax = rMax;
+		if (rMin < 0 || Double.isNaN(rMin)) {
+			rMin = 0;
+			rValid = false;
+		}
+		if (rMax > 1 || Double.isNaN(rMax)) {
+			rMax = 1;
+			rValid = false;
+		}
+		if (rMin >= rMax) {
+			rMin = 0;
+			rMax = 1;
+			rValid = false;
+		}
+		if (!rValid) {
+			IJ.log(String.format(
+					"The values (radius_min=%f, radius_max=%f) specified are invalid. " +
+							"Both values must be in the range [0,1] and min should be strictly smaller than max. " +
+							"Using the default values (radius_min=0, radius_max=1) instead.",
+					rmin, rmax));
+
+		}
+
+		// Validate Nr
+		if (nr < 10) {
+			IJ.log(String.format(
+					"The value specified for Nr=%d is invalid. Nr should be in the range [10,100]. Using the default value of 10 instead.",
+					nr));
+			nr = 10;
+		}
+
+		// Validate ng
+		if (ng < 5) {
+			IJ.log(String.format(
+					"The value specified for Ng=%d is invalid. Ng should be in the range [5,40]. Using the default value of 5 instead.",
+					ng));
+			ng = 5;
+		}
 	}
 
 	private void initDecorrelationAnalysis(ImagePlus im, String savePath) {
