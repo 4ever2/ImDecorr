@@ -71,7 +71,7 @@ public class Decorrelation_Analysis implements PlugIn {
 	}
 
 	private void runPlugin() {
-		if (!showDialog())
+		if (!showDialog(false))
 			return;
 
 		ImagePlus im = (ImagePlus) ij.WindowManager.getCurrentImage();
@@ -110,7 +110,7 @@ public class Decorrelation_Analysis implements PlugIn {
 	}
 
 	private void runPluginBatch() {
-		if (!showDialogBatch())
+		if (!showDialog(true))
 			return;
 
 		File dir = new File(imPath);
@@ -148,7 +148,7 @@ public class Decorrelation_Analysis implements PlugIn {
 		}
 	}
 
-	private boolean showDialog() {
+	private boolean showDialog(boolean batch) {
 		NonBlockingGenericDialog dialog = new NonBlockingGenericDialog("Image Decorrelation Analysis");
 		dialog.addMessage("Settings");
 
@@ -159,8 +159,12 @@ public class Decorrelation_Analysis implements PlugIn {
 		dialog.addToSameRow();
 		dialog.addNumericField("Ng", 10);
 		dialog.addCheckbox("Do_plot", true);
-		dialog.addToSameRow();
-		dialog.addCheckbox("Batch_stack", false);
+		if (batch) {
+			dialog.addDirectoryField("Image_path", "");
+		} else {
+			dialog.addToSameRow();
+			dialog.addCheckbox("Batch_stack", false);
+		}
 
 		dialog.showDialog();
 		if (dialog.wasCanceled())
@@ -171,34 +175,11 @@ public class Decorrelation_Analysis implements PlugIn {
 		nr = (int) dialog.getNextNumber();
 		ng = (int) dialog.getNextNumber();
 		doPlot = dialog.getNextBoolean();
-		batchStack = dialog.getNextBoolean();
-
-		return true;
-	}
-
-	private boolean showDialogBatch() {
-		NonBlockingGenericDialog dialog = new NonBlockingGenericDialog("Image Decorrelation Analysis (Batch)");
-		dialog.addMessage("Settings");
-
-		dialog.addNumericField("Radius_min", 0);
-		dialog.addToSameRow();
-		dialog.addNumericField("Radius_max", 1);
-		dialog.addNumericField("Nr", 50);
-		dialog.addToSameRow();
-		dialog.addNumericField("Ng", 10);
-		dialog.addCheckbox("Do_plot", true);
-		dialog.addDirectoryField("Image_path", "");
-
-		dialog.showDialog();
-		if (dialog.wasCanceled())
-			return false;
-
-		rMin = dialog.getNextNumber();
-		rMax = dialog.getNextNumber();
-		nr = (int) dialog.getNextNumber();
-		ng = (int) dialog.getNextNumber();
-		doPlot = dialog.getNextBoolean();
-		imPath = dialog.getNextString();
+		if (batch) {
+			imPath = dialog.getNextString();
+		} else {
+			batchStack = dialog.getNextBoolean();
+		}
 
 		return true;
 	}
