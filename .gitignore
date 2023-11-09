@@ -142,4 +142,5 @@ octave-workspace
 .ionide
 
 # Maven
-ijplugin/target/
+ij1plugin/target/
+ij2plugin/target/

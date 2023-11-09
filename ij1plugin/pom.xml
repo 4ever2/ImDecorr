@@ -107,4 +107,23 @@
 		<main-class>com.github.imdecorr.Decorrelation_Analysis</main-class>
 		<license.copyrightOwners>Adrien Descloux - adrien.descloux@epfl.ch, École Polytechnique Fédérale de Lausanne</license.copyrightOwners>
 	</properties>
+
+	<profiles>
+		<profile>
+		<id>github</id>
+		<activation>
+			<property>
+			<name>useGitHubPackages</name>
+			<value>true</value>
+			</property>
+		</activation>
+		<distributionManagement>
+			<repository>
+				<id>github</id>
+				<name>GitHub Packages</name>
+				<url>https://maven.pkg.github.com/4ever2/ImDecorr</url>
+			</repository>
+		</distributionManagement>
+		</profile>
+	</profiles>
 </project>

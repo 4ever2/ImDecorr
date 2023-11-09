@@ -1,13 +1,13 @@
-name: 'Build ImageJ Plugin'
+name: 'Build ImageJ1 Plugin'
 on:
   push:
     branches:
     - 'master'
     paths:
-    - 'ijplugin/**/*'
+    - 'ij1plugin/**/*'
   pull_request:
     paths:
-    - 'ijplugin/**/*'
+    - 'ij1plugin/**/*'
 permissions:
   contents: 'read'
 jobs:
@@ -23,9 +23,9 @@ jobs:
           distribution: 'zulu'
           cache: maven
       - name: Build
-        run: cd ijplugin && mvn package
+        run: cd ij1plugin && mvn package
       - name: Prepare artifact
-        run: mkdir staging && cp ijplugin/target/*.jar staging
+        run: mkdir staging && cp ij1plugin/target/*.jar staging
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
