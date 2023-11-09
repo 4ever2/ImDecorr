@@ -37,20 +37,64 @@ import java.awt.BorderLayout;
 import ij.IJ;
 import ij.ImageJ;
 import ij.ImagePlus;
-import ij.plugin.PlugIn;
+import ij.gui.NonBlockingGenericDialog;
 
+import org.scijava.command.Command;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
-public class Decorrelation_Analysis implements PlugIn {
+@Plugin(type = Command.class, headless = true,
+	menuPath = "Plugins>Decorrelation Analysis")
+public class Decorrelation_Analysis implements Command {
+
+	@Parameter
+	private double radiusMin;
 
 	@Override
-	public void run(String arg) {
-		if (arg.equals("about")) {
-			showAbout();
-			return;
-		}
+	public void run() {
+		//runPlugin();
+	}
 
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'run'");
+/* 	@Override
+	public void run(String arg) {
+		switch (arg.toLowerCase()) {
+			case "about":
+				showAbout();
+				break;
+			case "run":
+				runPlugin();
+				break;
+			default:
+				throw new UnsupportedOperationException(String.format("Unimplemented method '%s'", arg));
+		}
+	} */
+
+	private void runPlugin() {
+		if (!showDialog())
+			return;
+	}
+
+	private boolean showDialog() {
+		NonBlockingGenericDialog dialog = new NonBlockingGenericDialog("Image Decorrelation Analysis");
+		dialog.addMessage("Settings");
+
+		dialog.addNumericField("Radius min", 0);
+		dialog.addToSameRow();
+		dialog.addNumericField("Radius max", 1);
+		dialog.addNumericField("Nr", 50);
+		dialog.addToSameRow();
+		dialog.addNumericField("Ng", 10);
+		dialog.addCheckbox("Do plot", true);
+		dialog.addToSameRow();
+		dialog.addCheckbox("Batch stack", false);
+		dialog.addToSameRow();
+		dialog.addCheckbox("Batch folder", false);
+
+		dialog.showDialog();
+		if (dialog.wasCanceled())
+			return false;
+
+		return true;
 	}
 
 	private String getVersion() {
