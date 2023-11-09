@@ -125,7 +125,6 @@ octave-workspace
 
 ### VisualStudioCode ###
 .vscode/*
-!.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
@@ -141,3 +140,6 @@ octave-workspace
 # Ignore all local history of files
 .history
 .ionide
+
+# Maven
+ijplugin/target/
