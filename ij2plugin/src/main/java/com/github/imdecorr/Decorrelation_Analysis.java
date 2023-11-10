@@ -51,9 +51,9 @@ public class Decorrelation_Analysis implements Command {
 	private static final String BATCH_STACK_DESCRIPTION = "Batch process all dimensions of the active image";
 	private static final String BATCH_FOLDER_DESCRIPTION = "Batch process all images in folder";
 
-	@Parameter(label = "Radius min :", description = RMIN_DESCRIPTION, min = "0", max = "1")
+	@Parameter(label = "Radius min :", description = RMIN_DESCRIPTION, min = "0.0", max = "1.0", stepSize = "0.001")
 	private double rMin = 0.0;
-	@Parameter(label = "Radius max :", description = RMAX_DESCRIPTION, min = "0", max = "1")
+	@Parameter(label = "Radius max :", description = RMAX_DESCRIPTION, min = "0.0", max = "1.0", stepSize = "0.001")
 	private double rMax = 1.0;
 	@Parameter(label = "Nr :", description = NR_DESCRIPTION, min = "10")
 	private int nr = 50;
