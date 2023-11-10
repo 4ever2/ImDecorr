@@ -41,7 +41,7 @@ import ij.ImageStack;
 import ij.gui.Roi;
 
 @Plugin(type = Command.class, headless = true, menuPath = "Plugins>Decorrelation Analysis")
-public class Decorrelation_Analysis implements Command {
+public class Decorrelation_Analysis extends CancelableCommand {
 
 	private static final String RMIN_DESCRIPTION = "Minimum radius [0,rMax] (normalized frequencies) used for decorrelation analysis";
 	private static final String RMAX_DESCRIPTION = "Maximum radius [rMin,1] (normalized frequencies) used for decorrelation analysis";
@@ -70,6 +70,10 @@ public class Decorrelation_Analysis implements Command {
 
 	@Override
 	public void run() {
+		if (this.isCanceled()) {
+			return;
+		}
+
 		initDecorrelationAnalysis(rMin, rMax, nr, ng, doPlot, batchFolder, batchStack);
 	}
 
