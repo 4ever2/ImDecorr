@@ -6,6 +6,9 @@
 * Set up CI/CD
 * Publish ImageJ plugin on GitHub Maven Registry
 * Update documentation
+* Port UI elements to ImageJ UI elements
+* Make input validation non-transparent
+* Enable use of the plugin with ImageJ macros and scripts
 
 ## 1.1.8
 * Fixed bug where the final local maxima was selected from the refined curves only instead of all the curves

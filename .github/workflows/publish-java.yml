@@ -19,6 +19,6 @@ jobs:
           distribution: 'zulu'
           cache: maven
       - name: Publish to GitHub Packages
-        run: cd ijplugin && mvn --batch-mode -DuseGitHubPackages=true deploy
+        run: cd ij1plugin && mvn --batch-mode -DuseGitHubPackages=true deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
