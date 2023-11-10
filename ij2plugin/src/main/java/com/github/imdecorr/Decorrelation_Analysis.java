@@ -62,15 +62,15 @@ public class Decorrelation_Analysis implements Command {
 	@Parameter(label = "Do plot", description = DO_PLOT_DESCRIPTION)
 	private boolean doPlot = true;
 	@Parameter(label = "Batch stack", description = BATCH_STACK_DESCRIPTION)
-	private boolean batch = false;
-	@Parameter(label = "Batch folder", description = BATCH_FOLDER_DESCRIPTION)
 	private boolean batchStack = false;
+	@Parameter(label = "Batch folder", description = BATCH_FOLDER_DESCRIPTION)
+	private boolean batchFolder = false;
 	@Parameter(label = "Save path", required = false)
 	private String savePath;
 
 	@Override
 	public void run() {
-		initDecorrelationAnalysis(rMin, rMax, nr, ng, doPlot, batch, batchStack);
+		initDecorrelationAnalysis(rMin, rMax, nr, ng, doPlot, batchFolder, batchStack);
 	}
 
 	private static void initDecorrelationAnalysis(double rmin, double rmax, int Nr, int Ng, boolean doPlot,
