@@ -65,8 +65,8 @@ public class Decorrelation_Analysis extends CancelableCommand {
 	private boolean batchStack = false;
 	@Parameter(label = "Batch folder", description = BATCH_FOLDER_DESCRIPTION)
 	private boolean batchFolder = false;
-	@Parameter(label = "Save path", required = false)
-	private String savePath;
+	@Parameter(label = "Save path", style = "directory", required = false)
+	private File savePath;
 
 	private void validateRadius() {
 		if (!Double.isFinite(rMin)) {
@@ -114,7 +114,7 @@ public class Decorrelation_Analysis extends CancelableCommand {
 		initDecorrelationAnalysis(rMin, rMax, nr, ng, doPlot, batchFolder, batchStack);
 	}
 
-	private static void initDecorrelationAnalysis(double rmin, double rmax, int Nr, int Ng, boolean doPlot,
+	private void initDecorrelationAnalysis(double rmin, double rmax, int Nr, int Ng, boolean doPlot,
 			boolean batch, boolean batchStack) {
 
 		// File selection management
@@ -164,6 +164,11 @@ public class Decorrelation_Analysis extends CancelableCommand {
 					"Please select a directory containing images to be processed.");
 			String dirPath = gd.getDirectory();
 			File dir = new File(dirPath);
+			if (!dir.isDirectory()) {
+				this.cancel("Save path must be a directory");
+				return;
+			}
+
 			String[] files = dir.list(new FilenameFilter() {
 				public boolean accept(File dir, String name) {
 					int index = name.indexOf('.', name.length() - 5);
@@ -182,7 +187,6 @@ public class Decorrelation_Analysis extends CancelableCommand {
 
 			for (int k = 0; k < files.length; k++) {
 				String file = files[k];
-				// IJ.log("File # " + Integer.toString(k) + ": " + file);
 				ImagePlus im = IJ.openImage(dirPath + File.separator + file);
 				im.show();
 				String savePath;
