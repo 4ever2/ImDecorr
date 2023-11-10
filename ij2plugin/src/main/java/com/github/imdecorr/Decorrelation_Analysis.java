@@ -51,13 +51,13 @@ public class Decorrelation_Analysis extends CancelableCommand {
 	private static final String BATCH_STACK_DESCRIPTION = "Batch process all dimensions of the active image";
 	private static final String BATCH_FOLDER_DESCRIPTION = "Batch process all images in folder";
 
-	@Parameter(label = "Radius min :", description = RMIN_DESCRIPTION, min = "0.0", max = "1.0", stepSize = "0.001")
+	@Parameter(label = "Radius min :", description = RMIN_DESCRIPTION, min = "0.0", max = "1.0", stepSize = "0.001", validater = "validateRadius")
 	private double rMin = 0.0;
-	@Parameter(label = "Radius max :", description = RMAX_DESCRIPTION, min = "0.0", max = "1.0", stepSize = "0.001")
+	@Parameter(label = "Radius max :", description = RMAX_DESCRIPTION, min = "0.0", max = "1.0", stepSize = "0.001", validater = "validateRadius")
 	private double rMax = 1.0;
-	@Parameter(label = "Nr :", description = NR_DESCRIPTION, min = "10")
+	@Parameter(label = "Nr :", description = NR_DESCRIPTION, min = "10", validater = "validateNr")
 	private int nr = 50;
-	@Parameter(label = "Ng :", description = NG_DESCRIPTION, min = "5")
+	@Parameter(label = "Ng :", description = NG_DESCRIPTION, min = "5", validater = "validateNg")
 	private int ng = 10;
 	@Parameter(label = "Do plot", description = DO_PLOT_DESCRIPTION)
 	private boolean doPlot = true;
@@ -67,6 +67,43 @@ public class Decorrelation_Analysis extends CancelableCommand {
 	private boolean batchFolder = false;
 	@Parameter(label = "Save path", required = false)
 	private String savePath;
+
+	private void validateRadius() {
+		if (!Double.isFinite(rMin)) {
+			this.cancel("Radius min parameter is not a valid number");
+			return;
+		}
+		if (!Double.isFinite(rMax)) {
+			this.cancel("Radius max parameter is not a valid number");
+			return;
+		}
+		if (rMin >= rMax) {
+			this.cancel("Radius max must be stricly greater than radius min");
+			return;
+		}
+		if (rMin < 0 || rMin > 1) {
+			this.cancel("Radius min must be between 0 and 1");
+			return;
+		}
+		if (rMax < 0 || rMax > 1) {
+			this.cancel("Radius max must be between 0 and 1");
+			return;
+		}
+	}
+
+	private void validateNr() {
+		if (nr < 10) {
+			this.cancel("Nr parameter must be >= 10");
+			return;
+		}
+	}
+
+	private void validateNg() {
+		if (ng < 5) {
+			this.cancel("Ng parameter must be >= 5");
+			return;
+		}
+	}
 
 	@Override
 	public void run() {
