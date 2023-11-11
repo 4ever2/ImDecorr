@@ -206,5 +206,4 @@ public class Decorrelation_Analysis extends CancelableCommand {
 
 		}
 	}
-
 }
