@@ -28,24 +28,25 @@
 */
 package com.github.imdecorr;
 
+import java.io.File;
+import java.io.FilenameFilter;
+
 import org.scijava.command.Command;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 import ij.IJ;
 import ij.ImagePlus;
-import ij.ImageStack;
-import ij.gui.Roi;
 
-@Plugin(type = Command.class, headless = true, menuPath = "Plugins>Decorrelation Analysis")
-public class Decorrelation_Analysis extends CancelableCommand {
+@Plugin(type = Command.class, headless = true, menuPath = "Plugins>Decorrelation Analysis Batch")
+public class Decorrelation_Analysis_Batch extends CancelableCommand {
 
 	private static final String RMIN_DESCRIPTION = "Minimum radius [0,rMax] (normalized frequencies) used for decorrelation analysis";
 	private static final String RMAX_DESCRIPTION = "Maximum radius [rMin,1] (normalized frequencies) used for decorrelation analysis";
 	private static final String NR_DESCRIPTION = "[10,100], Sampling of decorrelation curve";
 	private static final String NG_DESCRIPTION = "[5,40], Number of high-pass image analyzed";
 	private static final String DO_PLOT_DESCRIPTION = "Plot decorrelation analysis";
-	private static final String BATCH_STACK_DESCRIPTION = "Batch process all dimensions of the active image";
+	private static final String IM_PATH_DESCRIPTION = "Directory containing the images to be processed";
 
 	@Parameter(label = "Radius min :", description = RMIN_DESCRIPTION, min = "0.0", max = "1.0", stepSize = "0.001", validater = "validateRadius")
 	private double rMin = 0.0;
@@ -57,8 +58,8 @@ public class Decorrelation_Analysis extends CancelableCommand {
 	private int ng = 10;
 	@Parameter(label = "Do plot", description = DO_PLOT_DESCRIPTION)
 	private boolean doPlot = true;
-	@Parameter(label = "Batch stack", description = BATCH_STACK_DESCRIPTION)
-	private boolean batchStack = false;
+	@Parameter(label = "Images folder", description = IM_PATH_DESCRIPTION, style = "directory", required = false)
+	private File imDir;
 
 	private void validateRadius() {
 		if (!Double.isFinite(rMin)) {
@@ -107,44 +108,43 @@ public class Decorrelation_Analysis extends CancelableCommand {
 	}
 
 	private void initDecorrelationAnalysis() {
-		ImagePlus im = (ImagePlus) ij.WindowManager.getCurrentImage();
-
-		if (im == null) {
-			// open file selections tool for images
-			IJ.open();
-			im = ij.WindowManager.getCurrentImage();
-			im.show();
+		if (!imDir.isDirectory()) {
+			this.cancel("Save path must be a directory");
+			return;
 		}
+		String imPath = imDir.getPath();
+		String[] files = imDir.list(new FilenameFilter() {
+			public boolean accept(File dir, String name) {
+				int index = name.indexOf('.', name.length() - 5);
+				if (index != -1) {
+					String ext = name.substring(index, name.length());
 
-		// check if current image has a rectangle ROI selection
-		if (im.getRoi() != null) {
-			if (im.getRoi().getType() == Roi.RECTANGLE) {// Rectangle ROI
-			} else {
-				IJ.log("Non rectangular ROI not supported.\n"
-						+ "Deleting ROI and continue analysis.");
-				im.deleteRoi();
+					if (ext.equals(".tif") || ext.equals(".tiff") || ext.equals(".png") ||
+							ext.equals(".ome") || ext.equals(".bmp"))
+						return true;
+					else
+						return false;
+				} else
+					return false;
+			}
+		});
+
+		for (int k = 0; k < files.length; k++) {
+			String file = files[k];
+			ImagePlus im = IJ.openImage(imPath + File.separator + file);
+			im.show();
+			String savePath;
+			if (im != null) {
+				if (k == files.length - 1)
+					savePath = imPath;
+				else
+					savePath = null;
+
+				ImageDecorrelationAnalysis IDA = new ImageDecorrelationAnalysis(im, rMin,
+						rMax, nr, ng, doPlot, savePath);
+				// Run the analysis
+				IDA.startAnalysis();
 			}
 		}
-
-		if (batchStack == false) {
-			// Extract current image
-			ImageStack stack = im.getStack();
-			ImagePlus imp = new ImagePlus(stack.getSliceLabel(im.getCurrentSlice()),
-					stack.getProcessor(im.getCurrentSlice()));
-			imp.setCalibration(im.getCalibration());
-			imp.setRoi(im.getRoi());
-			imp.setTitle(im.getTitle());
-
-			im = imp;
-		}
-
-		// Image ready to be processed
-
-		// Create ImageDecorrelationAnalysis object
-		ImageDecorrelationAnalysis IDA = new ImageDecorrelationAnalysis(im, rMin,
-				rMax, nr, ng, doPlot, null);
-
-		// Run the analysis
-		IDA.startAnalysis();
 	}
 }
