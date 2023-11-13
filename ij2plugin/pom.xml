@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+		http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.scijava</groupId>
+		<artifactId>pom-scijava</artifactId>
+		<version>34.1.0</version>
+		<relativePath />
+	</parent>
+
+	<groupId>com.github</groupId>
+	<artifactId>Decorrelation_Analysis</artifactId>
+	<version>1.1.9-SNAPSHOT</version>
+
+	<name>Image Decorrelation Analysis</name>
+	<description>Image Decorrelation Analysis plugin for ImageJ.</description>
+	<url>https://github.com/4ever2/ImDecorr</url>
+	<inceptionYear>2019</inceptionYear>
+	<organization>
+		<name>École Polytechnique Fédérale de Lausanne</name>
+	</organization>
+	<licenses>
+		<license>
+			<name>GNU General Public License v3</name>
+			<url>https://www.gnu.org/licenses/gpl.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>0000-0002-3101-6641</id>
+			<name>Adrien Descloux</name>
+			<email>adrien.descloux@epfl.ch</email>
+			<organization>École Polytechnique Fédérale de Lausanne</organization>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>0000-0003-4515-4356</id>
+			<name>Kristin Grußmayer</name>
+			<organization>École Polytechnique Fédérale de Lausanne</organization>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>0000-0001-8194-2785</id>
+			<name>Aleksandra Radenovic</name>
+			<email>aleksandra.radenovic@epfl.ch</email>
+			<organization>École Polytechnique Fédérale de Lausanne</organization>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
+	</developers>
+	<contributors>
+		<contributor>
+			<name>4ever2</name>
+			<url>https://github.com/4ever2</url>
+			<organization>Aarhus University</organization>
+			<roles><role>maintainer</role></roles>
+			<properties><id>4ever2</id></properties>
+		</contributor>
+	</contributors>
+
+	<mailingLists>
+		<mailingList>
+			<name>Im</name>
+		</mailingList>
+	</mailingLists>
+
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/4ever2/ImDecorr/issues/</url>
+	</issueManagement>
+	<ciManagement>
+		<system>GitHub Actions</system>
+		<url>https://github.com/4ever2/ImDecorr/actions</url>
+	</ciManagement>
+	<scm>
+		<connection>scm:git:https://github.com/4ever2/ImDecorr</connection>
+		<developerConnection>scm:git:git@github.com:4ever2/ImDecorr</developerConnection>
+		<tag>HEAD</tag>
+		<url>https://github.com/4ever2/ImDecorr</url>
+	</scm>
+
+	<repositories>
+		<repository>
+			<id>scijava.public</id>
+			<url>https://maven.scijava.org/content/groups/public</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>net.imagej</groupId>
+			<artifactId>imagej</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.imagej</groupId>
+			<artifactId>imagej-legacy</artifactId>
+		</dependency>
+	</dependencies>
+
+	<properties>
+		<license.licenseName>gpl_v3</license.licenseName>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+
+		<package-name>com.github.imdecorr</package-name>
+		<main-class>com.github.imdecorr.Decorrelation_Analysis</main-class>
+		<license.copyrightOwners>Adrien Descloux - adrien.descloux@epfl.ch, École Polytechnique Fédérale de Lausanne</license.copyrightOwners>
+	</properties>
+
+	<profiles>
+		<profile>
+		<id>github</id>
+		<activation>
+			<property>
+			<name>useGitHubPackages</name>
+			<value>true</value>
+			</property>
+		</activation>
+		<distributionManagement>
+			<repository>
+				<id>github</id>
+				<name>GitHub Packages</name>
+				<url>https://maven.pkg.github.com/4ever2/ImDecorr</url>
+			</repository>
+		</distributionManagement>
+		</profile>
+	</profiles>
+</project>
