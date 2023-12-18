@@ -27,7 +27,7 @@ jobs:
       - name: Prepare artifact
         run: mkdir staging && cp ij1plugin/target/*.jar staging
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Package
           path: staging/*.jar
