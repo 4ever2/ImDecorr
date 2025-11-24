@@ -15,7 +15,7 @@ jobs:
     runs-on: 'ubuntu-latest'
     steps:
     - name: Checkout branch ${{ github.ref_name }}
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
     - name: Setup MATLAB
       uses: matlab-actions/setup-matlab@v2
     - name: Run build
